@@ -6,7 +6,7 @@ read -p "Repository name: " repo_name
 if gh repo ls --json name --jq '.[].name' | grep -Fxq $repo_name; then
   :
 else
-  read -p "Choose repository visibility(private/public): " repo_visibility
+  read -p $'\nChoose repository visibility(private/public): ' repo_visibility
   gh repo create $repo_name --$repo_visibility
 fi
 
@@ -15,7 +15,7 @@ git init
 mkdir src
 touch README.md .gitignore
 
-read -p "Choose repo type(python/web/clear): " repo_type
+read -p $'\nChoose repo type(python/web/clear): ' repo_type
 if [ $repo_type == 'python' ]; then
   touch src/main.py
   python3 -m venv .venv
