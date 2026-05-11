@@ -9,7 +9,7 @@ if gh repo ls --json name --jq '.[].name' | grep -Fxq $repo_name; then
 else
   repo_description=$(gum input --placeholder "A short description of your project: ")
   repo_visibility=$(gum choose --header "Repository visibility: " "private" "public" --limit 1)
-  gh repo create $repo_name --$repo_visibility --description $repo_description
+  gh repo create $repo_name --$repo_visibility --description "$repo_description"
 fi
 
 git init
