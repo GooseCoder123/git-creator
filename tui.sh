@@ -1,7 +1,7 @@
 #!/bin/bash
 
 username=$(gh auth status -a --json hosts --jq '.hosts.[].[].login')
-repo_name=$(gum input --placeholder "todo-app")
+repo_name=$(gum input --header "Your repo name:" --placeholder "todo-app")
 
 # we need to check if the repo already exists and if not we create one with the choosen name
 if gh repo ls --json name --jq '.[].name' | grep -Fxq $repo_name; then
@@ -14,12 +14,12 @@ fi
 
 git init
 
-mkdir src
 touch README.md .gitignore
 
-repo_preset=$(gum choose --header "Preset: " "python" "web" "clear" --limit 1)
+repo_preset=$(gum choose --header "Preset: " "python" "web" "clear" "clear(without src)" --limit 1)
 if [ $repo_preset == 'python' ]; then
   # we create a python venv
+  mkdir src
   touch src/main.py
   python3 -m venv .venv
   source .venv/bin/activate
@@ -38,6 +38,7 @@ build/
 .mypy_cache/
 EOF
 elif [ $repo_preset == 'web' ]; then
+  mkdir src
   touch src/index.html src/style.css src/script.js
   cat >> .gitignore << 'EOF'
 node_modules/
@@ -48,6 +49,8 @@ build/
 .cache/
 *.log
 EOF
+elif [ $repo_preset == 'clear' ]; then
+  mkdir src
 else
   :
 fi
